@@ -28,6 +28,8 @@ public class Documents {
     @Enumerated(EnumType.STRING)
     private DocumentStatus status;
 
+    private String documentUrl;
+
     @ManyToOne
     @JoinColumn(name="user_id")
     private Users user;

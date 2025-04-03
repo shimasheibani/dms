@@ -1,4 +1,4 @@
-package dto;
+package org.dms.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

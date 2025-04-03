@@ -1,9 +1,10 @@
-package dto;
+package org.dms.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.dms.enums.UserRole;
 
 @Data
 @AllArgsConstructor
@@ -18,5 +19,6 @@ public class RegisterRequest {
     private String username;
     @NotBlank(message = "password is required")
     private String password;
+    private UserRole role;
 
 }

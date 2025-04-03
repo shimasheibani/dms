@@ -35,5 +35,5 @@ deploy-job:
     - main
   script:
     - echo "Deploying application..."
-    - scp target/*.jar user@yourserver:/path/to/deploy/
+    - scp target/*.jar shima@localhost:/path/to/deploy/
 

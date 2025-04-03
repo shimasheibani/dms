@@ -1,4 +1,4 @@
-package dto;
+package org.dms.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

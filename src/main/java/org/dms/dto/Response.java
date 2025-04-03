@@ -1,15 +1,18 @@
-package dto;
+package org.dms.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 import org.dms.enums.UserRole;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-@Builder
 @Data
+@Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
+
+
 public class Response {
     private int status;
     private String message;
@@ -22,4 +25,9 @@ public class Response {
 
     private UsersDto usersDto;
     private List<UsersDto> usersDtos;
+
+    private DocumentsDto documentsDto;
+    private List<DocumentsDto> documentsDtos;
+    @Builder.Default
+    private final LocalDateTime timeStamp = LocalDateTime.now();
 }
