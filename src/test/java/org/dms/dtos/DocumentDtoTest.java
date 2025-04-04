@@ -1,4 +1,4 @@
-package dtosTest;
+package org.dms.dtosTest;
 import org.dms.dto.DocumentsDto;
 import org.dms.enums.DocumentStatus;
 import org.junit.jupiter.api.Test;

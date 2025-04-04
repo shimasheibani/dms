@@ -1,4 +1,4 @@
-package entitiesTest;
+package org.dms.entitiesTest;
 
 import org.dms.entity.Documents;
 import org.dms.enums.DocumentStatus;

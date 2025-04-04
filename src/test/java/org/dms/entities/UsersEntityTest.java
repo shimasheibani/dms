@@ -1,4 +1,4 @@
-package entitiesTest;
+package org.dms.entitiesTest;
 
 import org.dms.entity.Users;
 import org.dms.enums.UserRole;

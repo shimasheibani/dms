@@ -1,4 +1,4 @@
-package dtosTest;
+package org.dms.dtosTest;
 
 import org.dms.dto.Response;
 import org.dms.dto.UsersDto;

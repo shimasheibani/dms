@@ -1,4 +1,4 @@
-package dtosTest;
+package org.dms.dtosTest;
 import org.dms.dto.LoginRequest;
 import org.junit.jupiter.api.Test;
 
