@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 package org.dms.dtos;
+=======
+package org.dms.dtosTest;
+>>>>>>> bee2c3d2fefd102ba4b57642e6b421d97e0ffd8c
 
 import org.dms.dto.UsersDto;
 import org.dms.enums.UserRole;
