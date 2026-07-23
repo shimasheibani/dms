@@ -90,7 +90,10 @@ public class DocumentServiceImp implements DocumentService {
             documents.setDocumentUrl(documentPath);
         }
         documentRepository.save(documents);
-        return null;
+        return Response.builder()
+                .status(200)
+                .message("Document updated successfully")
+                .build();
     }
 
     @Override

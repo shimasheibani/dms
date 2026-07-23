@@ -8,11 +8,10 @@ import org.dms.dto.Response;
 import org.dms.dto.UsersDto;
 import org.dms.entity.Users;
 import org.dms.service.UserService;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Configuration
+@RestController
 @RequestMapping("api/user")
 //@RequiredArgsConstructor
 @Slf4j
@@ -35,11 +34,11 @@ public class UserController {
     public ResponseEntity<Response> updateUser(@PathVariable Long id, @RequestBody @Valid UsersDto userDto){
         return ResponseEntity.ok(userService.updateUser(id, userDto));
     }
-    @DeleteMapping("/{id")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Response> deleteUsr(@PathVariable Long id){
         return ResponseEntity.ok(userService.deleteUser(id));
     }
-    @GetMapping("/userDocument")
+    @GetMapping("/userDocument/{id}")
     public ResponseEntity<Response> getUserDocuments(@PathVariable Long id){
         return ResponseEntity.ok(userService.getUserDocuments(id));
     }
