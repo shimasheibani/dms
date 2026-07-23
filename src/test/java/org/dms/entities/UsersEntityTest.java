@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 package org.dms.entities;
-=======
-package org.dms.entitiesTest;
->>>>>>> bee2c3d2fefd102ba4b57642e6b421d97e0ffd8c
 
 import org.dms.entity.Users;
 import org.dms.enums.UserRole;
