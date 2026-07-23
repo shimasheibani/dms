@@ -8,14 +8,14 @@ import org.dms.dto.Response;
 import org.dms.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @Slf4j
 //@RequiredArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthUser {
     private final UserService userService;
 
@@ -23,12 +23,12 @@ public class AuthUser {
         this.userService = userService;
     }
 
-    @GetMapping("/register")
+    @PostMapping("/register")
     public ResponseEntity<Response> register(@RequestBody RegisterRequest registerRequest) {
         return ResponseEntity.ok(userService.registerUser(registerRequest));
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<Response> login(@RequestBody LoginRequest loginRequest) {
         return ResponseEntity.ok(userService.loginUser(loginRequest));
     }

@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Response getAllUser() {
         List<Users> usersList = userRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
-        List<UsersDto> userDtoList = modelmapper.map(usersList, new TypeToken<UsersDto>() {}.getType());
+        List<UsersDto> userDtoList = modelmapper.map(usersList, new TypeToken<List<UsersDto>>() {}.getType());
         return Response.builder()
                 .status(200)
                 .message("All Users List Is as below:")

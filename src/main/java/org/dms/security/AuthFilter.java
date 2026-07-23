@@ -26,19 +26,34 @@ public class AuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = getTokenFromRequest(request);
         if(token != null){
-            String email = jwtUtils.getUsernamFromToken(token);
-            UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
-            if(StringUtils.hasText(email) && jwtUtils.isTokenValid(token, userDetails)){
-                log.info("Token is valid, for username of " );
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                try{
-                    filterChain.doFilter(request,response);
-                }catch (Exception ex){
-                    log.error("Exception occured while logging in");
+            try {
+                String email = jwtUtils.getUsernamFromToken(token);
+                if(StringUtils.hasText(email)) {
+                    UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
+                    if(jwtUtils.isTokenValid(token, userDetails)){
+                        log.info("Token is valid, for username of {}", email);
+                        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    }
                 }
+            } catch (Exception e) {
+                // Invalid, malformed, or expired token: leave the security context empty
+                // so the request falls through as unauthenticated instead of never
+                // reaching filterChain.doFilter() below.
+                log.warn("Rejected invalid JWT: {}", e.getMessage());
+                SecurityContextHolder.clearContext();
             }
+        }
+        // This must run unconditionally: previously it only ran inside the
+        // "token present and valid" branch, so any request with no token or
+        // an invalid token never continued down the filter chain at all
+        // (the request would just hang instead of reaching the controller
+        // or a 401 response).
+        try {
+            filterChain.doFilter(request, response);
+        } catch (Exception ex) {
+            log.error("Exception occurred while processing request", ex);
         }
     }
 
