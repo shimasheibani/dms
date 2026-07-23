@@ -1,0 +1,78 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+new file mode 100644
+index 0000000..b960662
+--- /dev/null
++++ b/.github/workflows/ci.yml
+@@ -0,0 +1,27 @@
++name: CI
++
++on:
++  push:
++    branches: [ main ]
++  pull_request:
++    branches: [ main ]
++
++jobs:
++  build-and-test:
++    runs-on: ubuntu-latest
++    steps:
++      - name: Checkout
++        uses: actions/checkout@v4
++
++      - name: Set up JDK 21
++        uses: actions/setup-java@v4
++        with:
++          java-version: '21'
++          distribution: 'temurin'
++          cache: maven
++
++      - name: Run tests
++        # The repository tests use an in-memory H2 database
++        # (see src/test/resources/application-test.properties), so no
++        # external MySQL instance is needed to run them in CI.
++        run: mvn -B test
+diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
+deleted file mode 100644
+index 4d488e9..0000000
+--- a/.gitlab-ci.yml
++++ /dev/null
+@@ -1,39 +0,0 @@
+-image: maven:3.8.4-openjdk-21
+-stages:
+-  - build
+-  - test
+-  - package
+-  - deploy
+-
+-variables:
+-  MAVEN_OPTS: -Dmaven.repo.local=.m2/repository"
+-cache:
+-  paths:
+-    - .m2/repository/
+-
+-build-job:
+-  stage: build
+-  script:
+-    - echo "Building the project..."
+-    - mvn clean compile
+-  artifacts:
+-    paths:
+-      - target/
+-
+-test-job:
+-  stage: test
+-  script:
+-    - echo " Packaging thr application ... "
+-    - mvn package -DskipTests
+-  artifacts:
+-    paths:
+-      - target/*.jar
+-
+-deploy-job:
+-  stage: deploy
+-  only:
+-    - main
+-  script:
+-    - echo "Deploying application..."
+-    - scp target/*.jar shima@localhost:/path/to/deploy/
+-
