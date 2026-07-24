@@ -1,0 +1,914 @@
+From 6fc7f54e67ae2fbb4ac1eb746879c45c901bb17b Mon Sep 17 00:00:00 2001
+From: shima sheibani <shima.sheibani72@gmail.com>
+Date: Fri, 24 Jul 2026 09:55:29 +0200
+Subject: [PATCH] Fix unresolved merge conflict markers in pom.xml; remove
+ .idea/ from version control
+
+- pom.xml had literal <<<<<<< HEAD / ======= / >>>>>>> conflict markers
+  left over from a bad merge, causing 'Non-parseable POM' and CI failure.
+  Kept the h2 test dependency (needed for @DataJpaTest).
+- Removed .idea/ from git tracking and added it to .gitignore; those
+  IDE config files also had unresolved conflict markers and don't
+  belong in version control.
+- Removed stray leftover *.patch files that had been accidentally
+  committed.
+---
+ .gitignore                           |   1 +
+ .idea/.gitignore                     |   8 -
+ .idea/artifacts/DMS_Web_exploded.xml |  13 -
+ .idea/dataSources.xml                |  31 ---
+ .idea/encodings.xml                  |   7 -
+ .idea/misc.xml                       |  14 --
+ .idea/uiDesigner.xml                 | 124 ---------
+ .idea/vcs.xml                        |  11 -
+ dms-fixes.patch                      | 214 ----------------
+ dms-tests.patch                      | 363 ---------------------------
+ pom.xml                              |   3 -
+ 11 files changed, 1 insertion(+), 788 deletions(-)
+ delete mode 100644 .idea/.gitignore
+ delete mode 100644 .idea/artifacts/DMS_Web_exploded.xml
+ delete mode 100644 .idea/dataSources.xml
+ delete mode 100644 .idea/encodings.xml
+ delete mode 100644 .idea/misc.xml
+ delete mode 100644 .idea/uiDesigner.xml
+ delete mode 100644 .idea/vcs.xml
+ delete mode 100644 dms-fixes.patch
+ delete mode 100644 dms-tests.patch
+
+diff --git a/.gitignore b/.gitignore
+index 5c20d39..74f76ec 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -38,3 +38,4 @@ build/
+ .DS_Store
+ ### Environment ###
+ .env
++.idea/
+diff --git a/.idea/.gitignore b/.idea/.gitignore
+deleted file mode 100644
+index 13566b8..0000000
+--- a/.idea/.gitignore
++++ /dev/null
+@@ -1,8 +0,0 @@
+-# Default ignored files
+-/shelf/
+-/workspace.xml
+-# Editor-based HTTP Client requests
+-/httpRequests/
+-# Datasource local storage ignored files
+-/dataSources/
+-/dataSources.local.xml
+diff --git a/.idea/artifacts/DMS_Web_exploded.xml b/.idea/artifacts/DMS_Web_exploded.xml
+deleted file mode 100644
+index 66d2bdf..0000000
+--- a/.idea/artifacts/DMS_Web_exploded.xml
++++ /dev/null
+@@ -1,13 +0,0 @@
+-<component name="ArtifactManager">
+-  <artifact type="exploded-war" name="DMS:Web exploded">
+-    <output-path>$PROJECT_DIR$/out/artifacts/DMS_Web_exploded</output-path>
+-    <root id="root">
+-      <element id="javaee-facet-resources" facet="DMS/web/Web" />
+-      <element id="directory" name="WEB-INF">
+-        <element id="directory" name="classes">
+-          <element id="module-output" name="DMS" />
+-        </element>
+-      </element>
+-    </root>
+-  </artifact>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/dataSources.xml b/.idea/dataSources.xml
+deleted file mode 100644
+index 16c692d..0000000
+--- a/.idea/dataSources.xml
++++ /dev/null
+@@ -1,31 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+-<<<<<<< HEAD
+-    <data-source source="LOCAL" name="DMS_database@localhost" uuid="6f358e85-9779-4c51-a74a-9b532f7362b2">
+-      <driver-ref>mysql.8</driver-ref>
+-      <synchronize>true</synchronize>
+-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+-      <jdbc-url>jdbc:mysql://localhost:3306/DMS_database</jdbc-url>
+-      <jdbc-additional-properties>
+-        <property name="com.intellij.clouds.kubernetes.db.host.port" />
+-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
+-        <property name="com.intellij.clouds.kubernetes.db.resource.type" value="Deployment" />
+-=======
+-    <data-source source="LOCAL" name="DMS_database@localhost" uuid="9a7ad8f1-571c-4f42-92b7-02ad647be7ab">
+-      <driver-ref>mysql.8</driver-ref>
+-      <synchronize>true</synchronize>
+-      <imported>true</imported>
+-      <remarks>$PROJECT_DIR$/src/main/resources/application.properties</remarks>
+-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+-      <jdbc-url>mysql://localhost:3306/DMS_database</jdbc-url>
+-      <jdbc-additional-properties>
+-        <property name="com.intellij.clouds.kubernetes.db.host.port" />
+-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
+->>>>>>> bee2c3d2fefd102ba4b57642e6b421d97e0ffd8c
+-        <property name="com.intellij.clouds.kubernetes.db.container.port" />
+-      </jdbc-additional-properties>
+-      <working-dir>$ProjectFileDir$</working-dir>
+-    </data-source>
+-  </component>
+-</project>
+\ No newline at end of file
+diff --git a/.idea/encodings.xml b/.idea/encodings.xml
+deleted file mode 100644
+index aa00ffa..0000000
+--- a/.idea/encodings.xml
++++ /dev/null
+@@ -1,7 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="Encoding">
+-    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+-    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+-  </component>
+-</project>
+\ No newline at end of file
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+deleted file mode 100644
+index 89c3cbb..0000000
+--- a/.idea/misc.xml
++++ /dev/null
+@@ -1,14 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="ExternalStorageConfigurationManager" enabled="true" />
+-  <component name="MavenProjectsManager">
+-    <option name="originalFiles">
+-      <list>
+-        <option value="$PROJECT_DIR$/pom.xml" />
+-      </list>
+-    </option>
+-  </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="21 (2)" project-jdk-type="JavaSDK">
+-    <output url="file://$PROJECT_DIR$/out" />
+-  </component>
+-</project>
+\ No newline at end of file
+diff --git a/.idea/uiDesigner.xml b/.idea/uiDesigner.xml
+deleted file mode 100644
+index 2b63946..0000000
+--- a/.idea/uiDesigner.xml
++++ /dev/null
+@@ -1,124 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="Palette2">
+-    <group name="Swing">
+-      <item class="com.intellij.uiDesigner.HSpacer" tooltip-text="Horizontal Spacer" icon="/com/intellij/uiDesigner/icons/hspacer.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="1" hsize-policy="6" anchor="0" fill="1" />
+-      </item>
+-      <item class="com.intellij.uiDesigner.VSpacer" tooltip-text="Vertical Spacer" icon="/com/intellij/uiDesigner/icons/vspacer.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="1" anchor="0" fill="2" />
+-      </item>
+-      <item class="javax.swing.JPanel" icon="/com/intellij/uiDesigner/icons/panel.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3" />
+-      </item>
+-      <item class="javax.swing.JScrollPane" icon="/com/intellij/uiDesigner/icons/scrollPane.svg" removable="false" auto-create-binding="false" can-attach-label="true">
+-        <default-constraints vsize-policy="7" hsize-policy="7" anchor="0" fill="3" />
+-      </item>
+-      <item class="javax.swing.JButton" icon="/com/intellij/uiDesigner/icons/button.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="3" anchor="0" fill="1" />
+-        <initial-values>
+-          <property name="text" value="Button" />
+-        </initial-values>
+-      </item>
+-      <item class="javax.swing.JRadioButton" icon="/com/intellij/uiDesigner/icons/radioButton.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
+-        <initial-values>
+-          <property name="text" value="RadioButton" />
+-        </initial-values>
+-      </item>
+-      <item class="javax.swing.JCheckBox" icon="/com/intellij/uiDesigner/icons/checkBox.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
+-        <initial-values>
+-          <property name="text" value="CheckBox" />
+-        </initial-values>
+-      </item>
+-      <item class="javax.swing.JLabel" icon="/com/intellij/uiDesigner/icons/label.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="0" anchor="8" fill="0" />
+-        <initial-values>
+-          <property name="text" value="Label" />
+-        </initial-values>
+-      </item>
+-      <item class="javax.swing.JTextField" icon="/com/intellij/uiDesigner/icons/textField.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
+-          <preferred-size width="150" height="-1" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JPasswordField" icon="/com/intellij/uiDesigner/icons/passwordField.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
+-          <preferred-size width="150" height="-1" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JFormattedTextField" icon="/com/intellij/uiDesigner/icons/formattedTextField.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
+-          <preferred-size width="150" height="-1" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JTextArea" icon="/com/intellij/uiDesigner/icons/textArea.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JTextPane" icon="/com/intellij/uiDesigner/icons/textPane.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JEditorPane" icon="/com/intellij/uiDesigner/icons/editorPane.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JComboBox" icon="/com/intellij/uiDesigner/icons/comboBox.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="0" hsize-policy="2" anchor="8" fill="1" />
+-      </item>
+-      <item class="javax.swing.JTable" icon="/com/intellij/uiDesigner/icons/table.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JList" icon="/com/intellij/uiDesigner/icons/list.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="2" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JTree" icon="/com/intellij/uiDesigner/icons/tree.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JTabbedPane" icon="/com/intellij/uiDesigner/icons/tabbedPane.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
+-          <preferred-size width="200" height="200" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JSplitPane" icon="/com/intellij/uiDesigner/icons/splitPane.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
+-          <preferred-size width="200" height="200" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JSpinner" icon="/com/intellij/uiDesigner/icons/spinner.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
+-      </item>
+-      <item class="javax.swing.JSlider" icon="/com/intellij/uiDesigner/icons/slider.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
+-      </item>
+-      <item class="javax.swing.JSeparator" icon="/com/intellij/uiDesigner/icons/separator.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3" />
+-      </item>
+-      <item class="javax.swing.JProgressBar" icon="/com/intellij/uiDesigner/icons/progressbar.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1" />
+-      </item>
+-      <item class="javax.swing.JToolBar" icon="/com/intellij/uiDesigner/icons/toolbar.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1">
+-          <preferred-size width="-1" height="20" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JToolBar$Separator" icon="/com/intellij/uiDesigner/icons/toolbarSeparator.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="0" anchor="0" fill="1" />
+-      </item>
+-      <item class="javax.swing.JScrollBar" icon="/com/intellij/uiDesigner/icons/scrollbar.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="0" anchor="0" fill="2" />
+-      </item>
+-    </group>
+-  </component>
+-</project>
+\ No newline at end of file
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+deleted file mode 100644
+index e2dd977..0000000
+--- a/.idea/vcs.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="VcsDirectoryMappings">
+-<<<<<<< HEAD
+-    <mapping directory="" vcs="Git" />
+-=======
+-    <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+-    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+->>>>>>> bee2c3d2fefd102ba4b57642e6b421d97e0ffd8c
+-  </component>
+-</project>
+\ No newline at end of file
+diff --git a/dms-fixes.patch b/dms-fixes.patch
+deleted file mode 100644
+index 1130679..0000000
+--- a/dms-fixes.patch
++++ /dev/null
+@@ -1,214 +0,0 @@
+-diff --git a/.env.example b/.env.example
+-new file mode 100644
+-index 0000000..fc64c18
+---- /dev/null
+-+++ b/.env.example
+-@@ -0,0 +1,11 @@
+-+# Copy this file to .env and fill in your own values.
+-+# .env is gitignored and must never be committed.
+-+
+-+DB_USERNAME=root
+-+DB_PASSWORD=change-me
+-+
+-+# Must be a long random string (32+ chars) — used to sign JWTs.
+-+JWT_SECRET=change-me-to-a-long-random-secret
+-+
+-+# Only needed if the GitLab integration is actually used.
+-+GITLAB_TOKEN=change-me
+-diff --git a/.gitignore b/.gitignore
+-index 5ff6309..5c20d39 100644
+---- a/.gitignore
+-+++ b/.gitignore
+-@@ -35,4 +35,6 @@ build/
+- .vscode/
+- 
+- ### Mac OS ###
+--.DS_Store
+-\ No newline at end of file
+-+.DS_Store
+-+### Environment ###
+-+.env
+-diff --git a/src/main/java/org/dms/controller/AuthUser.java b/src/main/java/org/dms/controller/AuthUser.java
+-index 125fa59..b92d274 100644
+---- a/src/main/java/org/dms/controller/AuthUser.java
+-+++ b/src/main/java/org/dms/controller/AuthUser.java
+-@@ -8,14 +8,14 @@ import org.dms.dto.Response;
+- import org.dms.service.UserService;
+- import org.springframework.http.ResponseEntity;
+- import org.springframework.stereotype.Controller;
+--import org.springframework.web.bind.annotation.GetMapping;
+-+import org.springframework.web.bind.annotation.PostMapping;
+- import org.springframework.web.bind.annotation.RequestBody;
+- import org.springframework.web.bind.annotation.RequestMapping;
+- 
+- @Controller
+- @Slf4j
+- //@RequiredArgsConstructor
+--@RequestMapping("/auth")
+-+@RequestMapping("/api/auth")
+- public class AuthUser {
+-     private final UserService userService;
+- 
+-@@ -23,12 +23,12 @@ public class AuthUser {
+-         this.userService = userService;
+-     }
+- 
+--    @GetMapping("/register")
+-+    @PostMapping("/register")
+-     public ResponseEntity<Response> register(@RequestBody RegisterRequest registerRequest) {
+-         return ResponseEntity.ok(userService.registerUser(registerRequest));
+-     }
+- 
+--    @GetMapping("/login")
+-+    @PostMapping("/login")
+-     public ResponseEntity<Response> login(@RequestBody LoginRequest loginRequest) {
+-         return ResponseEntity.ok(userService.loginUser(loginRequest));
+-     }
+-diff --git a/src/main/java/org/dms/controller/UserController.java b/src/main/java/org/dms/controller/UserController.java
+-index 5b95e8b..632c3e6 100644
+---- a/src/main/java/org/dms/controller/UserController.java
+-+++ b/src/main/java/org/dms/controller/UserController.java
+-@@ -8,11 +8,10 @@ import org.dms.dto.Response;
+- import org.dms.dto.UsersDto;
+- import org.dms.entity.Users;
+- import org.dms.service.UserService;
+--import org.springframework.context.annotation.Configuration;
+- import org.springframework.http.ResponseEntity;
+- import org.springframework.web.bind.annotation.*;
+- 
+--@Configuration
+-+@RestController
+- @RequestMapping("api/user")
+- //@RequiredArgsConstructor
+- @Slf4j
+-@@ -35,11 +34,11 @@ public class UserController {
+-     public ResponseEntity<Response> updateUser(@PathVariable Long id, @RequestBody @Valid UsersDto userDto){
+-         return ResponseEntity.ok(userService.updateUser(id, userDto));
+-     }
+--    @DeleteMapping("/{id")
+-+    @DeleteMapping("/{id}")
+-     public ResponseEntity<Response> deleteUsr(@PathVariable Long id){
+-         return ResponseEntity.ok(userService.deleteUser(id));
+-     }
+--    @GetMapping("/userDocument")
+-+    @GetMapping("/userDocument/{id}")
+-     public ResponseEntity<Response> getUserDocuments(@PathVariable Long id){
+-         return ResponseEntity.ok(userService.getUserDocuments(id));
+-     }
+-diff --git a/src/main/java/org/dms/security/AuthFilter.java b/src/main/java/org/dms/security/AuthFilter.java
+-index 0d38290..cb59746 100644
+---- a/src/main/java/org/dms/security/AuthFilter.java
+-+++ b/src/main/java/org/dms/security/AuthFilter.java
+-@@ -26,20 +26,35 @@ public class AuthFilter extends OncePerRequestFilter {
+-     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+-         String token = getTokenFromRequest(request);
+-         if(token != null){
+--            String email = jwtUtils.getUsernamFromToken(token);
+--            UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
+--            if(StringUtils.hasText(email) && jwtUtils.isTokenValid(token, userDetails)){
+--                log.info("Token is valid, for username of " );
+--                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+--                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+--                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+--                try{
+--                    filterChain.doFilter(request,response);
+--                }catch (Exception ex){
+--                    log.error("Exception occured while logging in");
+-+            try {
+-+                String email = jwtUtils.getUsernamFromToken(token);
+-+                if(StringUtils.hasText(email)) {
+-+                    UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
+-+                    if(jwtUtils.isTokenValid(token, userDetails)){
+-+                        log.info("Token is valid, for username of {}", email);
+-+                        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+-+                        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+-+                        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+-+                    }
+-                 }
+-+            } catch (Exception e) {
+-+                // Invalid, malformed, or expired token: leave the security context empty
+-+                // so the request falls through as unauthenticated instead of never
+-+                // reaching filterChain.doFilter() below.
+-+                log.warn("Rejected invalid JWT: {}", e.getMessage());
+-+                SecurityContextHolder.clearContext();
+-             }
+-         }
+-+        // This must run unconditionally: previously it only ran inside the
+-+        // "token present and valid" branch, so any request with no token or
+-+        // an invalid token never continued down the filter chain at all
+-+        // (the request would just hang instead of reaching the controller
+-+        // or a 401 response).
+-+        try {
+-+            filterChain.doFilter(request, response);
+-+        } catch (Exception ex) {
+-+            log.error("Exception occurred while processing request", ex);
+-+        }
+-     }
+- 
+-     private String getTokenFromRequest(HttpServletRequest request) {
+-diff --git a/src/main/java/org/dms/service/impl/DocumentServiceImp.java b/src/main/java/org/dms/service/impl/DocumentServiceImp.java
+-index 7028d6b..ba33283 100644
+---- a/src/main/java/org/dms/service/impl/DocumentServiceImp.java
+-+++ b/src/main/java/org/dms/service/impl/DocumentServiceImp.java
+-@@ -90,7 +90,10 @@ public class DocumentServiceImp implements DocumentService {
+-             documents.setDocumentUrl(documentPath);
+-         }
+-         documentRepository.save(documents);
+--        return null;
+-+        return Response.builder()
+-+                .status(200)
+-+                .message("Document updated successfully")
+-+                .build();
+-     }
+- 
+-     @Override
+-diff --git a/src/main/java/org/dms/service/impl/UserServiceImpl.java b/src/main/java/org/dms/service/impl/UserServiceImpl.java
+-index e95e773..3deb166 100644
+---- a/src/main/java/org/dms/service/impl/UserServiceImpl.java
+-+++ b/src/main/java/org/dms/service/impl/UserServiceImpl.java
+-@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
+-     @Override
+-     public Response getAllUser() {
+-         List<Users> usersList = userRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
+--        List<UsersDto> userDtoList = modelmapper.map(usersList, new TypeToken<UsersDto>() {}.getType());
+-+        List<UsersDto> userDtoList = modelmapper.map(usersList, new TypeToken<List<UsersDto>>() {}.getType());
+-         return Response.builder()
+-                 .status(200)
+-                 .message("All Users List Is as below:")
+-diff --git a/src/main/resources/application.properties b/src/main/resources/application.properties
+-index bf9027c..cb51eef 100644
+---- a/src/main/resources/application.properties
+-+++ b/src/main/resources/application.properties
+-@@ -1,26 +1,17 @@
+- server.port=8081
+- 
+- spring.datasource.url=jdbc:mysql://localhost:3306/DMS_database
+--<<<<<<< HEAD
+--
+--=======
+-->>>>>>> bee2c3d2fefd102ba4b57642e6b421d97e0ffd8c
+--spring.datasource.username=root
+--spring.datasource.password=Aa!123456
+-+spring.datasource.username=${DB_USERNAME:root}
+-+spring.datasource.password=${DB_PASSWORD}
+- spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+- 
+- spring.jpa.hibernate.ddl-auto=update
+- spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
+- 
+--<<<<<<< HEAD
+--
+--
+--=======
+-->>>>>>> bee2c3d2fefd102ba4b57642e6b421d97e0ffd8c
+- gitlab.url=http://localhost:8080
+--gitlab.token=glpat-puK2menyQwHen17a4MyF
+--secretJwtString= "qweASDzxcP:>123146(*&dfe"
+-+gitlab.token=${GITLAB_TOKEN}
+-+secretJwtString=${JWT_SECRET}
+- 
+- spring.servlet.multipart.enabled=true
+- spring.servlet.multipart.max-file-size=10MB
+--spring.servlet.multipart.max-request-size=2MB
+-\ No newline at end of file
+-+spring.servlet.multipart.max-request-size=20MB
+diff --git a/dms-tests.patch b/dms-tests.patch
+deleted file mode 100644
+index a76b96a..0000000
+--- a/dms-tests.patch
++++ /dev/null
+@@ -1,363 +0,0 @@
+-diff --git a/src/test/java/org/dms/dtos/DocumentDtoTest.java b/src/test/java/org/dms/dtos/DocumentDtoTest.java
+-index 10d3e40..810df0f 100644
+---- a/src/test/java/org/dms/dtos/DocumentDtoTest.java
+-+++ b/src/test/java/org/dms/dtos/DocumentDtoTest.java
+-@@ -1,8 +1,4 @@
+--<<<<<<< HEAD
+- package org.dms.dtos;
+--=======
+--package org.dms.dtosTest;
+-->>>>>>> bee2c3d2fefd102ba4b57642e6b421d97e0ffd8c
+- import org.dms.dto.DocumentsDto;
+- import org.dms.enums.DocumentStatus;
+- import org.junit.jupiter.api.Test;
+-diff --git a/src/test/java/org/dms/dtos/LoginRequestTest.java b/src/test/java/org/dms/dtos/LoginRequestTest.java
+-index 797b4e9..605b6ba 100644
+---- a/src/test/java/org/dms/dtos/LoginRequestTest.java
+-+++ b/src/test/java/org/dms/dtos/LoginRequestTest.java
+-@@ -1,8 +1,4 @@
+--<<<<<<< HEAD
+- package org.dms.dtos;
+--=======
+--package org.dms.dtosTest;
+-->>>>>>> bee2c3d2fefd102ba4b57642e6b421d97e0ffd8c
+- import org.dms.dto.LoginRequest;
+- import org.junit.jupiter.api.Test;
+- 
+-diff --git a/src/test/java/org/dms/dtos/RegisterRequestTest.java b/src/test/java/org/dms/dtos/RegisterRequestTest.java
+-index 4f567bf..7f25341 100644
+---- a/src/test/java/org/dms/dtos/RegisterRequestTest.java
+-+++ b/src/test/java/org/dms/dtos/RegisterRequestTest.java
+-@@ -1,8 +1,4 @@
+--<<<<<<< HEAD
+- package org.dms.dtos;
+--=======
+--package org.dms.dtosTest;
+-->>>>>>> bee2c3d2fefd102ba4b57642e6b421d97e0ffd8c
+- import org.dms.dto.RegisterRequest;
+- import org.junit.jupiter.api.Test;
+- 
+-diff --git a/src/test/java/org/dms/dtos/ResponseTest.java b/src/test/java/org/dms/dtos/ResponseTest.java
+-index e985658..2a0b174 100644
+---- a/src/test/java/org/dms/dtos/ResponseTest.java
+-+++ b/src/test/java/org/dms/dtos/ResponseTest.java
+-@@ -1,8 +1,4 @@
+--<<<<<<< HEAD
+- package org.dms.dtos;
+--=======
+--package org.dms.dtosTest;
+-->>>>>>> bee2c3d2fefd102ba4b57642e6b421d97e0ffd8c
+- 
+- import org.dms.dto.Response;
+- import org.dms.dto.UsersDto;
+-diff --git a/src/test/java/org/dms/dtos/UserDtoTest.java b/src/test/java/org/dms/dtos/UserDtoTest.java
+-index e35ceb4..e7d5abd 100644
+---- a/src/test/java/org/dms/dtos/UserDtoTest.java
+-+++ b/src/test/java/org/dms/dtos/UserDtoTest.java
+-@@ -1,8 +1,4 @@
+--<<<<<<< HEAD
+- package org.dms.dtos;
+--=======
+--package org.dms.dtosTest;
+-->>>>>>> bee2c3d2fefd102ba4b57642e6b421d97e0ffd8c
+- 
+- import org.dms.dto.UsersDto;
+- import org.dms.enums.UserRole;
+-diff --git a/src/test/java/org/dms/entities/DocumentEntityTest.java b/src/test/java/org/dms/entities/DocumentEntityTest.java
+-index 3b28c2f..49466f3 100644
+---- a/src/test/java/org/dms/entities/DocumentEntityTest.java
+-+++ b/src/test/java/org/dms/entities/DocumentEntityTest.java
+-@@ -1,8 +1,4 @@
+--<<<<<<< HEAD
+- package org.dms.entities;
+--=======
+--package org.dms.entitiesTest;
+-->>>>>>> bee2c3d2fefd102ba4b57642e6b421d97e0ffd8c
+- 
+- import org.dms.entity.Documents;
+- import org.dms.enums.DocumentStatus;
+-diff --git a/src/test/java/org/dms/entities/UsersEntityTest.java b/src/test/java/org/dms/entities/UsersEntityTest.java
+-index feaf8e3..fb13d33 100644
+---- a/src/test/java/org/dms/entities/UsersEntityTest.java
+-+++ b/src/test/java/org/dms/entities/UsersEntityTest.java
+-@@ -1,8 +1,4 @@
+--<<<<<<< HEAD
+- package org.dms.entities;
+--=======
+--package org.dms.entitiesTest;
+-->>>>>>> bee2c3d2fefd102ba4b57642e6b421d97e0ffd8c
+- 
+- import org.dms.entity.Users;
+- import org.dms.enums.UserRole;
+-diff --git a/src/test/java/org/dms/security/AuthFilterTest.java b/src/test/java/org/dms/security/AuthFilterTest.java
+-new file mode 100644
+-index 0000000..a158a49
+---- /dev/null
+-+++ b/src/test/java/org/dms/security/AuthFilterTest.java
+-@@ -0,0 +1,71 @@
+-+package org.dms.security;
+-+
+-+import jakarta.servlet.FilterChain;
+-+import jakarta.servlet.http.HttpServletRequest;
+-+import jakarta.servlet.http.HttpServletResponse;
+-+import org.junit.jupiter.api.AfterEach;
+-+import org.junit.jupiter.api.Test;
+-+import org.junit.jupiter.api.extension.ExtendWith;
+-+import org.mockito.InjectMocks;
+-+import org.mockito.Mock;
+-+import org.mockito.junit.jupiter.MockitoExtension;
+-+import org.springframework.security.core.context.SecurityContextHolder;
+-+
+-+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+-+import static org.junit.jupiter.api.Assertions.assertNull;
+-+import static org.mockito.Mockito.*;
+-+
+-+/**
+-+ * Regression tests for AuthFilter.
+-+ *
+-+ * Main bug: filterChain.doFilter(request, response) was only called INSIDE
+-+ * the "token present and valid" branch. Any request with no token, or an
+-+ * invalid/expired one (including the login/register endpoints themselves,
+-+ * since they never carry a token), never reached filterChain.doFilter() at
+-+ * all -- the request would simply hang instead of continuing down the
+-+ * chain or reaching a 401 handler.
+-+ */
+-+@ExtendWith(MockitoExtension.class)
+-+class AuthFilterTest {
+-+
+-+    @Mock
+-+    private JwtUtils jwtUtils;
+-+    @Mock
+-+    private CustomUserDetailsService customUserDetailsService;
+-+    @Mock
+-+    private HttpServletRequest request;
+-+    @Mock
+-+    private HttpServletResponse response;
+-+    @Mock
+-+    private FilterChain filterChain;
+-+
+-+    @InjectMocks
+-+    private AuthFilter authFilter;
+-+
+-+    @AfterEach
+-+    void clearContext() {
+-+        SecurityContextHolder.clearContext();
+-+    }
+-+
+-+    @Test
+-+    void continuesFilterChain_whenNoAuthorizationHeaderPresent() throws Exception {
+-+        when(request.getHeader("Authorization")).thenReturn(null);
+-+
+-+        authFilter.doFilterInternal(request, response, filterChain);
+-+
+-+        verify(filterChain, times(1)).doFilter(request, response);
+-+        assertNull(SecurityContextHolder.getContext().getAuthentication());
+-+        verifyNoInteractions(jwtUtils, customUserDetailsService);
+-+    }
+-+
+-+    @Test
+-+    void continuesFilterChain_whenTokenIsInvalidOrExpired() throws Exception {
+-+        when(request.getHeader("Authorization")).thenReturn("Bearer bad.token.value");
+-+        when(jwtUtils.getUsernamFromToken("bad.token.value")).thenThrow(new RuntimeException("expired"));
+-+
+-+        assertDoesNotThrow(() -> authFilter.doFilterInternal(request, response, filterChain));
+-+
+-+        verify(filterChain, times(1)).doFilter(request, response);
+-+        assertNull(SecurityContextHolder.getContext().getAuthentication());
+-+    }
+-+}
+-diff --git a/src/test/java/org/dms/service/impl/DocumentServiceImpTest.java b/src/test/java/org/dms/service/impl/DocumentServiceImpTest.java
+-new file mode 100644
+-index 0000000..962ea9f
+---- /dev/null
+-+++ b/src/test/java/org/dms/service/impl/DocumentServiceImpTest.java
+-@@ -0,0 +1,75 @@
+-+package org.dms.service.impl;
+-+
+-+import org.dms.dto.DocumentsDto;
+-+import org.dms.dto.Response;
+-+import org.dms.entity.Documents;
+-+import org.dms.exception.NotFoundException;
+-+import org.dms.repository.DocumentRepository;
+-+import org.junit.jupiter.api.Test;
+-+import org.junit.jupiter.api.extension.ExtendWith;
+-+import org.mockito.ArgumentCaptor;
+-+import org.mockito.InjectMocks;
+-+import org.mockito.Mock;
+-+import org.mockito.junit.jupiter.MockitoExtension;
+-+import org.modelmapper.ModelMapper;
+-+import org.springframework.web.multipart.MultipartFile;
+-+
+-+import java.util.Optional;
+-+
+-+import static org.junit.jupiter.api.Assertions.*;
+-+import static org.mockito.Mockito.*;
+-+
+-+/**
+-+ * Regression tests for DocumentServiceImp.
+-+ *
+-+ * Main bug covered here: updateDocument() saved the updated document but
+-+ * then did "return null;" instead of a real Response, which would surface
+-+ * to callers as a null response body / NPE further up the stack.
+-+ */
+-+@ExtendWith(MockitoExtension.class)
+-+class DocumentServiceImpTest {
+-+
+-+    @Mock
+-+    private DocumentRepository documentRepository;
+-+    @Mock
+-+    private ModelMapper modelMapper;
+-+
+-+    @InjectMocks
+-+    private DocumentServiceImp documentServiceImp;
+-+
+-+    @Test
+-+    void updateDocument_returnsSuccessResponse_insteadOfNull() throws Exception {
+-+        Documents existing = Documents.builder().id(1L).title("Old Title").author("Old Author").build();
+-+        when(documentRepository.findById(1L)).thenReturn(Optional.of(existing));
+-+
+-+        DocumentsDto dto = new DocumentsDto();
+-+        dto.setId(1L);
+-+        dto.setTitle("New Title");
+-+
+-+        Response response = documentServiceImp.updateDocument(dto, null);
+-+
+-+        assertNotNull(response, "updateDocument must not return null");
+-+        assertEquals(200, response.getStatus());
+-+        verify(documentRepository).save(existing);
+-+        assertEquals("New Title", existing.getTitle());
+-+    }
+-+
+-+    @Test
+-+    void updateDocument_throwsNotFound_whenDocumentMissing() {
+-+        when(documentRepository.findById(99L)).thenReturn(Optional.empty());
+-+        DocumentsDto dto = new DocumentsDto();
+-+        dto.setId(99L);
+-+
+-+        assertThrows(NotFoundException.class, () -> documentServiceImp.updateDocument(dto, null));
+-+    }
+-+
+-+    @Test
+-+    void deleteDocument_removesDocument_whenFound() {
+-+        Documents existing = Documents.builder().id(1L).build();
+-+        when(documentRepository.findById(1L)).thenReturn(Optional.of(existing));
+-+
+-+        documentServiceImp.deleteDocument(1L);
+-+
+-+        verify(documentRepository).delete(existing);
+-+    }
+-+}
+-diff --git a/src/test/java/org/dms/service/impl/UserServiceImplTest.java b/src/test/java/org/dms/service/impl/UserServiceImplTest.java
+-new file mode 100644
+-index 0000000..ad730a7
+---- /dev/null
+-+++ b/src/test/java/org/dms/service/impl/UserServiceImplTest.java
+-@@ -0,0 +1,108 @@
+-+package org.dms.service.impl;
+-+
+-+import org.junit.jupiter.api.Test;
+-+import org.junit.jupiter.api.extension.ExtendWith;
+-+import org.dms.dto.LoginRequest;
+-+import org.dms.dto.RegisterRequest;
+-+import org.dms.dto.Response;
+-+import org.dms.dto.UsersDto;
+-+import org.dms.entity.Users;
+-+import org.dms.enums.UserRole;
+-+import org.dms.repository.UserRepository;
+-+import org.dms.security.JwtUtils;
+-+import org.mockito.ArgumentCaptor;
+-+import org.mockito.InjectMocks;
+-+import org.mockito.Mock;
+-+import org.mockito.junit.jupiter.MockitoExtension;
+-+import org.modelmapper.ModelMapper;
+-+import org.springframework.security.crypto.password.PasswordEncoder;
+-+
+-+import java.util.ArrayList;
+-+import java.util.List;
+-+import java.util.Optional;
+-+
+-+import static org.junit.jupiter.api.Assertions.*;
+-+import static org.mockito.ArgumentMatchers.any;
+-+import static org.mockito.ArgumentMatchers.eq;
+-+import static org.mockito.Mockito.*;
+-+
+-+/**
+-+ * Regression tests for UserServiceImpl.
+-+ *
+-+ * Main bug covered here: getAllUser() mapped the user list with
+-+ * new TypeToken<UsersDto>(){}.getType() instead of
+-+ * new TypeToken<List<UsersDto>>(){}.getType() — a single-item type token
+-+ * for a list source, which ModelMapper cannot map correctly.
+-+ */
+-+@ExtendWith(MockitoExtension.class)
+-+class UserServiceImplTest {
+-+
+-+    @Mock
+-+    private JwtUtils jwtUtils;
+-+    @Mock
+-+    private ModelMapper modelmapper;
+-+    @Mock
+-+    private UserRepository userRepository;
+-+    @Mock
+-+    private PasswordEncoder passwordEncoder;
+-+
+-+    @InjectMocks
+-+    private UserServiceImpl userServiceImpl;
+-+
+-+    @Test
+-+    void registerUser_encodesPassword_andDefaultsRoleToAdmin_whenRoleMissing() {
+-+        RegisterRequest request = new RegisterRequest("shima", "sheibani", "shima@example.com", "plainPass", null);
+-+        when(passwordEncoder.encode("plainPass")).thenReturn("encoded-pass");
+-+
+-+        userServiceImpl.registerUser(request);
+-+
+-+        ArgumentCaptor<Users> captor = ArgumentCaptor.forClass(Users.class);
+-+        verify(userRepository).save(captor.capture());
+-+        assertEquals("encoded-pass", captor.getValue().getPassword());
+-+        assertEquals(UserRole.ADMIN, captor.getValue().getUserRole());
+-+        assertEquals("shima@example.com", captor.getValue().getEmail());
+-+    }
+-+
+-+    @Test
+-+    void loginUser_throws_whenPasswordDoesNotMatch() {
+-+        Users user = Users.builder().email("shima@example.com").password("hashed").build();
+-+        when(userRepository.findByEmail("shima@example.com")).thenReturn(Optional.of(user));
+-+        when(passwordEncoder.matches("wrong", "hashed")).thenReturn(false);
+-+
+-+        LoginRequest request = new LoginRequest("shima@example.com", "wrong");
+-+
+-+        assertThrows(RuntimeException.class, () -> userServiceImpl.loginUser(request));
+-+        verify(jwtUtils, never()).generateToken(any());
+-+    }
+-+
+-+    @Test
+-+    void loginUser_returnsToken_whenCredentialsAreCorrect() {
+-+        Users user = Users.builder().email("shima@example.com").password("hashed").userRole(UserRole.ADMIN).build();
+-+        when(userRepository.findByEmail("shima@example.com")).thenReturn(Optional.of(user));
+-+        when(passwordEncoder.matches("correct", "hashed")).thenReturn(true);
+-+        when(jwtUtils.generateToken("shima@example.com")).thenReturn("jwt-token");
+-+
+-+        Response response = userServiceImpl.loginUser(new LoginRequest("shima@example.com", "correct"));
+-+
+-+        assertEquals("jwt-token", response.getToken());
+-+        assertEquals(UserRole.ADMIN, response.getUserRole());
+-+    }
+-+
+-+    @Test
+-+    void getAllUser_mapsRepositoryListToDtoList() {
+-+        List<Users> users = List.of(Users.builder().email("a@example.com").build());
+-+        when(userRepository.findAll(any(org.springframework.data.domain.Sort.class))).thenReturn(users);
+-+
+-+        List<UsersDto> mapped = new ArrayList<>();
+-+        UsersDto dto = new UsersDto();
+-+        dto.setEmail("a@example.com");
+-+        mapped.add(dto);
+-+        when(modelmapper.map(eq(users), any(java.lang.reflect.Type.class))).thenReturn(mapped);
+-+
+-+        Response response = userServiceImpl.getAllUser();
+-+
+-+        assertNotNull(response.getUsersDtos(), "usersDtos must be populated, not null/empty due to a wrong TypeToken");
+-+        assertEquals(1, response.getUsersDtos().size());
+-+        assertEquals("a@example.com", response.getUsersDtos().get(0).getEmail());
+-+    }
+-+}
+diff --git a/pom.xml b/pom.xml
+index eded3ae..4726951 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -108,15 +108,12 @@
+             <groupId>org.springframework.boot</groupId>
+             <artifactId>spring-boot-starter-thymeleaf</artifactId>
+         </dependency>
+-<<<<<<< HEAD
+         <dependency>
+             <groupId>com.h2database</groupId>
+             <artifactId>h2</artifactId>
+             <scope>test</scope>
+         </dependency>
+ 
+-=======
+->>>>>>> bee2c3d2fefd102ba4b57642e6b421d97e0ffd8c
+     </dependencies>
+     <build>
+         <plugins>
+-- 
+2.34.1
+
