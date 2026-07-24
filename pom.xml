@@ -108,15 +108,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
-<<<<<<< HEAD
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
 
-=======
->>>>>>> bee2c3d2fefd102ba4b57642e6b421d97e0ffd8c
     </dependencies>
     <build>
         <plugins>
